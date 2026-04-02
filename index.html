@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Untuk Kamu ❤️</title>
+
+<style>
+*{box-sizing:border-box;}
+body{
+ margin:0;
+ font-family:'Segoe UI',sans-serif;
+ overflow:hidden;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
+ color:white;
+}
+
+/* BACKGROUND */
+body::before{
+ content:"";
+ position:absolute;
+ width:100%; height:100%;
+ background:url('bg.jpg') center/cover no-repeat;
+ filter:brightness(0.6);
+ z-index:-1;
+ transition:1.5s;
+}
+.dark-mode::before{
+ background:url('night.jpg') center/cover no-repeat;
+}
+
+/* CARD */
+.card{
+ background:rgba(0,0,0,0.45);
+ padding:30px;
+ border-radius:20px;
+ text-align:center;
+ max-width:400px;
+ backdrop-filter:blur(10px);
+}
+
+/* ANIMATION */
+.fade{animation:fadeIn 1s;}
+@keyframes fadeIn{
+ from{opacity:0; transform:translateY(20px);}
+ to{opacity:1; transform:translateY(0);}
+}
+.shake{animation:shake 0.3s;}
+@keyframes shake{
+ 25%{transform:translateX(-5px);}
+ 75%{transform:translateX(5px);}
+}
+
+/* INPUT */
+input,button{
+ padding:10px;
+ margin:10px;
+ border-radius:10px;
+ border:none;
+ width:80%;
+}
+button{
+ background:#a8e063;
+ cursor:pointer;
+ transition:0.3s;
+}
+button:hover{transform:scale(1.05);}
+
+#error{color:#ff6b6b;height:18px;font-size:14px;}
+
+/* FOTO LOOP SMOOTH */
+.photo-wrapper{
+ position:absolute;
+ bottom:0;
+ width:100%;
+ overflow:hidden;
+}
+.photo-wrapper.show{
+ opacity:1;
+}
+.photo-track{
+ display:flex;
+ width:max-content;
+ animation:scrollLoop 30s linear infinite;
+}
+.photo-track img{
+ width:220px;
+ height:160px;
+ margin:10px;
+ border-radius:15px;
+ object-fit:cover;
+}
+@keyframes scrollLoop{
+ from{transform:translateX(0);}
+ to{transform:translateX(-50%);}
+}
+
+/* STARS */
+.star{
+ position:absolute;
+ width:2px;
+ height:2px;
+ background:white;
+ animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+ from{opacity:0.2;}
+ to{opacity:1;}
+}
+
+/* SHOOTING STAR */
+.shoot{
+ position:absolute;
+ width:2px;
+ height:80px;
+ background:linear-gradient(white,transparent);
+ transform:rotate(45deg);
+ animation:shoot 1s linear;
+}
+@keyframes shoot{
+ to{transform:translate(300px,300px) rotate(45deg); opacity:0;}
+}
+
+/* FIREWORK */
+.rocket{
+ position:absolute;
+ width:3px;
+ height:12px;
+ background:white;
+ animation:rocketUp 0.8s linear forwards;
+}
+@keyframes rocketUp{
+ to{transform:translateY(-200px); opacity:0;}
+}
+.particle{
+ position:absolute;
+ width:4px;
+ height:4px;
+ border-radius:50%;
+ animation:explode 1.5s ease-out forwards;
+}
+@keyframes explode{
+ to{transform:translate(var(--x),var(--y)); opacity:0;}
+}
+.flash{
+ position:fixed;
+ width:100%; height:100%;
+ background:white;
+ opacity:0;
+ pointer-events:none;
+}
+
+/* FLASH STRONG */
+.flash-strong{
+ position:fixed;
+ width:100%;
+ height:100%;
+ background:white;
+ opacity:0;
+ pointer-events:none;
+}
+
+/* PLAYFUL */
+.pulse{animation:pulse 1s infinite;}
+@keyframes pulse{
+ 50%{transform:scale(1.1);}
+}
+
+/* CONFETTI */
+.confetti{
+ position:absolute;
+ width:6px;
+ height:6px;
+ animation:confettiFall 1.5s linear forwards;
+}
+@keyframes confettiFall{
+ to{transform:translateY(300px) rotate(720deg); opacity:0;}
+}
+
+/* GLOW */
+.glow{
+ color:#fff;
+ text-shadow:
+ 0 0 5px #fff,
+ 0 0 10px #ff4d6d,
+ 0 0 20px #ff4d6d,
+ 0 0 40px #ff4d6d;
+ animation:glowPulse 2s infinite alternate;
+}
+@keyframes glowPulse{
+ from{text-shadow:0 0 5px #fff,0 0 10px #ff4d6d;}
+ to{text-shadow:0 0 10px #fff,0 0 20px #ff4d6d,0 0 40px #ff4d6d;}
+}
+
+.hidden{display:none;}
+#final{font-size:32px;font-weight:bold;}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="music" loop>
+<source src="music.mp3">
+</audio>
+
+<audio id="cameraSound">
+<source src="camera.mp3">
+</audio>
+
+<!-- FOTO -->
+<div class="photo-wrapper hidden" id="photoWrapper">
+<div class="photo-track">
+<img src="foto1.jpg"><img src="foto2.jpg"><img src="foto3.jpg"><img src="foto4.jpg"><img src="foto5.jpg">
+<img src="foto1.jpg"><img src="foto2.jpg"><img src="foto3.jpg"><img src="foto4.jpg"><img src="foto5.jpg">
+</div>
+</div>
+
+<!-- LOGIN -->
+<div class="card fade" id="loginBox">
+<h2>Masukin dulu ya 😊</h2>
+<input id="name" placeholder="Nama kamu">
+<input id="key" type="password" placeholder="Kata kunci">
+<div id="error"></div>
+<button onclick="login()">Masuk 💌</button>
+</div>
+
+<!-- CONTENT -->
+<div class="card hidden" id="contentBox">
+<h2 id="greet"></h2>
+<p id="text"></p>
+<button onclick="next()">Lanjut 💖</button>
+</div>
+
+<!-- QUESTION -->
+<div class="card hidden" id="questionBox">
+<h2>Apakah kamu bahagia hari ini? 😊</h2>
+<button onmouseover="dodge(this)" onclick="answer()">Bahagia 😏</button>
+<button class="pulse" onclick="answer()">Bahagia Banget 💖</button>
+</div>
+
+<!-- POSE -->
+<div class="card hidden" id="poseBox">
+<h2 id="countdownText">Siap ya 📸</h2>
+</div>
+
+<!-- COMPLIMENT -->
+<div class="card hidden" id="complimentBox">
+<h2 class="glow">Kamu Sangat Cantik Hari Ini 💖</h2>
+</div>
+
+<!-- FINAL -->
+<div class="card hidden" id="finalBox">
+<div id="final"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+let userName="",i=0,char=0;
+
+const messages=[
+"Selamat ulang tahun ya 💖",
+"Aku bersyukur bisa kenal kamu 🌿",
+"Kamu itu spesial banget buat aku",
+"Dan hari ini aku cuma mau bilang sesuatu..."
+];
+
+/* LOGIN */
+function login(){
+ let name=$("name").value.trim();
+ let key=$("key").value;
+
+ if(!name||key!=="cintaaku"){
+  $("error").innerText="Salah 😜";
+  $("loginBox").classList.add("shake");
+  setTimeout(()=>$("loginBox").classList.remove("shake"),300);
+  return;
+ }
+
+ userName=name;
+ $("loginBox").classList.add("hidden");
+ $("contentBox").classList.remove("hidden");
+ // munculin foto setelah login
+$("photoWrapper").classList.remove("hidden");
+
+ $("greet").innerText="Hai "+name+" 💚";
+ $("music").play().catch(()=>{});
+
+ type();
+}
+
+/* TEXT */
+function type(){
+ if(char<messages[i].length){
+  $("text").innerHTML+=messages[i][char++];
+  setTimeout(type,35);
+ }
+}
+
+function next(){
+ i++;
+ if(i<messages.length){
+  char=0;$("text").innerHTML="";
+  type();
+ } else {
+  $("contentBox").classList.add("hidden");
+  $("questionBox").classList.remove("hidden");
+ }
+}
+
+/* PLAYFUL */
+function dodge(btn){
+ btn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*100-50}px)`;
+}
+
+/* ANSWER */
+function answer(){
+ $("questionBox").classList.add("hidden");
+ startPose();
+}
+
+/* POSE */
+function startPose(){
+ $("poseBox").classList.remove("hidden");
+ let c=3;
+
+ function count(){
+  if(c>0){
+   $("countdownText").innerText="Pose dulu ya "+c+" 📸";
+   c--; setTimeout(count,1000);
+  } else takePhoto();
+ }
+ count();
+}
+
+/* PHOTO */
+function takePhoto(){
+ $("cameraSound").play().catch(()=>{});
+
+ let flash=document.createElement("div");
+ flash.className="flash-strong";
+ document.body.appendChild(flash);
+
+ flash.animate([{opacity:1},{opacity:0}],{duration:800});
+ setTimeout(()=>flash.remove(),800);
+
+ $("poseBox").classList.add("hidden");
+
+ setTimeout(()=>{
+  $("complimentBox").classList.remove("hidden");
+
+  setTimeout(()=>{
+   $("complimentBox").classList.add("hidden");
+   showFinal();
+  },2000);
+
+ },400);
+}
+
+/* STARS */
+function createStars(){
+ for(let i=0;i<100;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  document.body.appendChild(s);
+ }
+}
+
+/* SHOOT */
+function shootingStar(){
+ setInterval(()=>{
+  let s=document.createElement("div");
+  s.className="shoot";
+  s.style.left=Math.random()*80+"vw";
+  s.style.top=Math.random()*40+"vh";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),1000);
+ },2000);
+}
+
+/* FIREWORK */
+function launchRocket(){
+ let x=Math.random()*innerWidth,y=innerHeight;
+
+ let r=document.createElement("div");
+ r.className="rocket";
+ r.style.left=x+"px"; r.style.top=y+"px";
+ document.body.appendChild(r);
+
+ setTimeout(()=>{r.remove();explode(x,y-200);},800);
+}
+
+function explode(x,y){
+ let colors=["#ff4d6d","#ffd166","#06d6a0","#4cc9f0"];
+
+ let flash=document.createElement("div");
+ flash.className="flash";
+ document.body.appendChild(flash);
+ flash.animate([{opacity:0.7},{opacity:0}],{duration:300});
+ setTimeout(()=>flash.remove(),300);
+
+ for(let i=0;i<70;i++){
+  let p=document.createElement("div");
+  p.className="particle";
+
+  let a=Math.random()*2*Math.PI;
+  let d=Math.random()*150+50;
+
+  p.style.setProperty("--x",(Math.cos(a)*d)+"px");
+  p.style.setProperty("--y",(Math.sin(a)*d+(i*0.3))+"px");
+
+  p.style.left=x+"px"; p.style.top=y+"px";
+  p.style.background=colors[Math.floor(Math.random()*4)];
+
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),1500);
+ }
+}
+
+function firework(){setInterval(launchRocket,900);}
+
+/* FINAL */
+function showFinal(){
+ $("finalBox").classList.remove("hidden");
+ document.body.classList.add("dark-mode");
+
+ createStars();
+ shootingStar();
+
+ let text="HAPPY BIRTHDAY, "+userName+" 🎉💖";
+ let j=0;
+
+ function typing(){
+  if(j<text.length){
+   $("final").innerHTML='<span class="glow">'+text.slice(0,j+1)+'</span>';
+   j++; setTimeout(typing,120);
+  } else firework();
+ }
+ typing();
+}
+</script>
+
+</body>
+</html>
