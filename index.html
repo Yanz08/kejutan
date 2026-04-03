@@ -2,10 +2,15 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+
+<!-- WAJIB untuk HP -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Untuk Kamu ❤️</title>
 
 <style>
 *{box-sizing:border-box;}
+
 body{
  margin:0;
  font-family:'Segoe UI',sans-serif;
@@ -15,6 +20,7 @@ body{
  align-items:center;
  height:100vh;
  color:white;
+ padding:15px;
 }
 
 /* BACKGROUND */
@@ -22,86 +28,93 @@ body::before{
  content:"";
  position:absolute;
  width:100%; height:100%;
- background:url('bg.jpeg') center/cover no-repeat;
+ background:url('bg.jpg') center/cover no-repeat;
  filter:brightness(0.6);
  z-index:-1;
  transition:1.5s;
 }
 .dark-mode::before{
- background:url('night.jpeg') center/cover no-repeat;
+ background:url('night.jpg') center/cover no-repeat;
 }
 
-/* CARD */
+/* CARD (RESPONSIVE) */
 .card{
- background:rgba(0,0,0,0.45);
- padding:30px;
+ background:rgba(0,0,0,0.5);
+ padding:20px;
  border-radius:20px;
  text-align:center;
- max-width:400px;
+ width:100%;
+ max-width:350px;
  backdrop-filter:blur(10px);
 }
 
-/* ANIMATION */
-.fade{animation:fadeIn 1s;}
-@keyframes fadeIn{
- from{opacity:0; transform:translateY(20px);}
- to{opacity:1; transform:translateY(0);}
-}
-.shake{animation:shake 0.3s;}
-@keyframes shake{
- 25%{transform:translateX(-5px);}
- 75%{transform:translateX(5px);}
-}
+/* TEXT HP */
+h2{font-size:20px;}
+p{font-size:16px;}
 
-/* INPUT */
+/* INPUT & BUTTON */
 input,button{
- padding:10px;
- margin:10px;
+ padding:12px;
+ margin:8px;
  border-radius:10px;
  border:none;
- width:80%;
+ width:100%;
+ font-size:16px;
 }
+
 button{
  background:#a8e063;
  cursor:pointer;
- transition:0.3s;
 }
-button:hover{transform:scale(1.05);}
 
-#error{color:#ff6b6b;height:18px;font-size:14px;}
+#error{
+ color:#ff6b6b;
+ font-size:14px;
+ height:18px;
+}
 
-/* FOTO LOOP SMOOTH */
+/* FOTO MOBILE */
 .photo-wrapper{
  position:absolute;
  bottom:0;
  width:100%;
  overflow:hidden;
+ opacity:0;
+ transition:1.5s;
 }
-.photo-wrapper.show{
- opacity:1;
-}
+.photo-wrapper.show{opacity:1;}
+
 .photo-track{
  display:flex;
  width:max-content;
- animation:scrollLoop 30s linear infinite;
+ animation:scrollLoop 40s linear infinite;
 }
+
 .photo-track img{
- width:220px;
- height:160px;
- margin:10px;
- border-radius:15px;
+ width:140px; /* lebih kecil biar pas HP */
+ height:100px;
+ margin:6px;
+ border-radius:10px;
  object-fit:cover;
 }
+
 @keyframes scrollLoop{
  from{transform:translateX(0);}
  to{transform:translateX(-50%);}
 }
 
-/* STARS */
+/* GLOW */
+.glow{
+ text-shadow:
+ 0 0 5px #fff,
+ 0 0 10px #ff4d6d,
+ 0 0 20px #ff4d6d;
+}
+
+/* STAR */
 .star{
  position:absolute;
- width:2px;
- height:2px;
+ width:2px;height:2px;
  background:white;
  animation:twinkle 2s infinite alternate;
 }
@@ -110,92 +123,61 @@ button:hover{transform:scale(1.05);}
  to{opacity:1;}
 }
 
-/* SHOOTING STAR */
+/* SHOOT */
 .shoot{
  position:absolute;
- width:2px;
- height:80px;
+ width:2px;height:60px;
  background:linear-gradient(white,transparent);
  transform:rotate(45deg);
  animation:shoot 1s linear;
 }
 @keyframes shoot{
- to{transform:translate(300px,300px) rotate(45deg); opacity:0;}
+ to{transform:translate(200px,200px) rotate(45deg); opacity:0;}
 }
 
 /* FIREWORK */
 .rocket{
  position:absolute;
- width:3px;
- height:12px;
+ width:3px;height:10px;
  background:white;
- animation:rocketUp 0.8s linear forwards;
+ animation:rocketUp 0.7s linear forwards;
 }
 @keyframes rocketUp{
- to{transform:translateY(-200px); opacity:0;}
+ to{transform:translateY(-150px); opacity:0;}
 }
+
 .particle{
  position:absolute;
- width:4px;
- height:4px;
+ width:3px;height:3px;
  border-radius:50%;
- animation:explode 1.5s ease-out forwards;
+ animation:explode 1.2s ease-out forwards;
 }
+
 @keyframes explode{
  to{transform:translate(var(--x),var(--y)); opacity:0;}
 }
-.flash{
+
+/* FLASH */
+.flash,.flash-strong{
  position:fixed;
- width:100%; height:100%;
+ width:100%;height:100%;
  background:white;
- opacity:0;
  pointer-events:none;
 }
 
-/* FLASH STRONG */
-.flash-strong{
- position:fixed;
- width:100%;
- height:100%;
- background:white;
- opacity:0;
- pointer-events:none;
+/* HIDDEN */
+.hidden{display:none;}
+
+#final{
+ font-size:26px;
+ font-weight:bold;
 }
 
-/* PLAYFUL */
+/* PLAYFUL BUTTON */
 .pulse{animation:pulse 1s infinite;}
 @keyframes pulse{
- 50%{transform:scale(1.1);}
+ 50%{transform:scale(1.05);}
 }
-
-/* CONFETTI */
-.confetti{
- position:absolute;
- width:6px;
- height:6px;
- animation:confettiFall 1.5s linear forwards;
-}
-@keyframes confettiFall{
- to{transform:translateY(300px) rotate(720deg); opacity:0;}
-}
-
-/* GLOW */
-.glow{
- color:#fff;
- text-shadow:
- 0 0 5px #fff,
- 0 0 10px #ff4d6d,
- 0 0 20px #ff4d6d,
- 0 0 40px #ff4d6d;
- animation:glowPulse 2s infinite alternate;
-}
-@keyframes glowPulse{
- from{text-shadow:0 0 5px #fff,0 0 10px #ff4d6d;}
- to{text-shadow:0 0 10px #fff,0 0 20px #ff4d6d,0 0 40px #ff4d6d;}
-}
-
-.hidden{display:none;}
-#final{font-size:32px;font-weight:bold;}
 </style>
 </head>
 
@@ -213,13 +195,13 @@ button:hover{transform:scale(1.05);}
 <!-- FOTO -->
 <div class="photo-wrapper hidden" id="photoWrapper">
 <div class="photo-track">
-<img src="foto1.jpeg"><img src="foto2.jpeg"><img src="foto3.jpeg"><img src="foto4.jpeg"><img src="foto5.jpeg">
-<img src="foto1.jpeg"><img src="foto2.jpeg"><img src="foto3.jpeg"><img src="foto4.jpeg"><img src="foto5.jpeg">
+<img src="foto1.jpg"><img src="foto2.jpg"><img src="foto3.jpg"><img src="foto4.jpg"><img src="foto5.jpg">
+<img src="foto1.jpg"><img src="foto2.jpg"><img src="foto3.jpg"><img src="foto4.jpg"><img src="foto5.jpg">
 </div>
 </div>
 
 <!-- LOGIN -->
-<div class="card fade" id="loginBox">
+<div class="card" id="loginBox">
 <h2>Masukin dulu ya 😊</h2>
 <input id="name" placeholder="Nama kamu">
 <input id="key" type="password" placeholder="Kata kunci">
@@ -237,13 +219,13 @@ button:hover{transform:scale(1.05);}
 <!-- QUESTION -->
 <div class="card hidden" id="questionBox">
 <h2>Apakah kamu bahagia hari ini? 😊</h2>
-<button onmouseover="dodge(this)" onclick="answer()">Bahagia 😏</button>
+<button onclick="answer()">Bahagia 😏</button>
 <button class="pulse" onclick="answer()">Bahagia Banget 💖</button>
 </div>
 
 <!-- POSE -->
 <div class="card hidden" id="poseBox">
-<h2 id="countdownText">Siap ya 📸</h2>
+<h2 id="countdownText"></h2>
 </div>
 
 <!-- COMPLIMENT -->
@@ -268,23 +250,23 @@ const messages=[
 "Dan hari ini aku cuma mau bilang sesuatu..."
 ];
 
-/* LOGIN */
 function login(){
  let name=$("name").value.trim();
  let key=$("key").value;
 
  if(!name||key!=="cintaaku"){
   $("error").innerText="Salah 😜";
-  $("loginBox").classList.add("shake");
-  setTimeout(()=>$("loginBox").classList.remove("shake"),300);
   return;
  }
 
  userName=name;
+
  $("loginBox").classList.add("hidden");
  $("contentBox").classList.remove("hidden");
- // munculin foto setelah login
-$("photoWrapper").classList.remove("hidden");
+
+ let pw=$("photoWrapper");
+ pw.classList.remove("hidden");
+ setTimeout(()=>pw.classList.add("show"),100);
 
  $("greet").innerText="Hai "+name+" 💚";
  $("music").play().catch(()=>{});
@@ -292,11 +274,10 @@ $("photoWrapper").classList.remove("hidden");
  type();
 }
 
-/* TEXT */
 function type(){
  if(char<messages[i].length){
   $("text").innerHTML+=messages[i][char++];
-  setTimeout(type,35);
+  setTimeout(type,40);
  }
 }
 
@@ -311,18 +292,11 @@ function next(){
  }
 }
 
-/* PLAYFUL */
-function dodge(btn){
- btn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*100-50}px)`;
-}
-
-/* ANSWER */
 function answer(){
  $("questionBox").classList.add("hidden");
  startPose();
 }
 
-/* POSE */
 function startPose(){
  $("poseBox").classList.remove("hidden");
  let c=3;
@@ -336,7 +310,6 @@ function startPose(){
  count();
 }
 
-/* PHOTO */
 function takePhoto(){
  $("cameraSound").play().catch(()=>{});
 
@@ -344,8 +317,8 @@ function takePhoto(){
  flash.className="flash-strong";
  document.body.appendChild(flash);
 
- flash.animate([{opacity:1},{opacity:0}],{duration:800});
- setTimeout(()=>flash.remove(),800);
+ flash.animate([{opacity:1},{opacity:0}],{duration:600});
+ setTimeout(()=>flash.remove(),600);
 
  $("poseBox").classList.add("hidden");
 
@@ -357,12 +330,11 @@ function takePhoto(){
    showFinal();
   },2000);
 
- },400);
+ },300);
 }
 
-/* STARS */
 function createStars(){
- for(let i=0;i<100;i++){
+ for(let i=0;i<60;i++){
   let s=document.createElement("div");
   s.className="star";
   s.style.left=Math.random()*100+"vw";
@@ -371,7 +343,6 @@ function createStars(){
  }
 }
 
-/* SHOOT */
 function shootingStar(){
  setInterval(()=>{
   let s=document.createElement("div");
@@ -380,51 +351,38 @@ function shootingStar(){
   s.style.top=Math.random()*40+"vh";
   document.body.appendChild(s);
   setTimeout(()=>s.remove(),1000);
- },2000);
+ },2500);
 }
 
-/* FIREWORK */
-function launchRocket(){
- let x=Math.random()*innerWidth,y=innerHeight;
+function firework(){
+ setInterval(()=>{
+  let x=Math.random()*innerWidth;
+  let y=innerHeight;
 
- let r=document.createElement("div");
- r.className="rocket";
- r.style.left=x+"px"; r.style.top=y+"px";
- document.body.appendChild(r);
+  let r=document.createElement("div");
+  r.className="rocket";
+  r.style.left=x+"px"; r.style.top=y+"px";
+  document.body.appendChild(r);
 
- setTimeout(()=>{r.remove();explode(x,y-200);},800);
+  setTimeout(()=>{
+   r.remove();
+   for(let i=0;i<50;i++){
+    let p=document.createElement("div");
+    p.className="particle";
+    let a=Math.random()*2*Math.PI;
+    let d=Math.random()*120;
+    p.style.setProperty("--x",(Math.cos(a)*d)+"px");
+    p.style.setProperty("--y",(Math.sin(a)*d)+"px");
+    p.style.left=x+"px"; p.style.top=(y-150)+"px";
+    p.style.background=["#ff4d6d","#ffd166","#06d6a0","#4cc9f0"][Math.floor(Math.random()*4)];
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1200);
+   }
+  },700);
+
+ },1000);
 }
 
-function explode(x,y){
- let colors=["#ff4d6d","#ffd166","#06d6a0","#4cc9f0"];
-
- let flash=document.createElement("div");
- flash.className="flash";
- document.body.appendChild(flash);
- flash.animate([{opacity:0.7},{opacity:0}],{duration:300});
- setTimeout(()=>flash.remove(),300);
-
- for(let i=0;i<70;i++){
-  let p=document.createElement("div");
-  p.className="particle";
-
-  let a=Math.random()*2*Math.PI;
-  let d=Math.random()*150+50;
-
-  p.style.setProperty("--x",(Math.cos(a)*d)+"px");
-  p.style.setProperty("--y",(Math.sin(a)*d+(i*0.3))+"px");
-
-  p.style.left=x+"px"; p.style.top=y+"px";
-  p.style.background=colors[Math.floor(Math.random()*4)];
-
-  document.body.appendChild(p);
-  setTimeout(()=>p.remove(),1500);
- }
-}
-
-function firework(){setInterval(launchRocket,900);}
-
-/* FINAL */
 function showFinal(){
  $("finalBox").classList.remove("hidden");
  document.body.classList.add("dark-mode");
