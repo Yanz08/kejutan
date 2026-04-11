@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Untuk Kamu ❤️</title>
+<link rel="stylesheet" href="style.css">
 
 <!-- MODE APP -->
 <meta name="theme-color" content="#000000">
@@ -197,6 +198,10 @@ button{
  pointer-events:none;
 }
 
+#btnNakalan{
+ transition:0.25s ease;
+}
+
 </style>
 </head>
 
@@ -251,7 +256,7 @@ button{
 <!-- QUESTION -->
 <div class="card hidden" id="questionBox">
 <h2>Apakah kamu bahagia hari ini? 😊</h2>
-<button onclick="answer()">Bahagia 😏</button>
+<button id="btnNakalan">Biasa Aja 😏</button>
 <button class="pulse" onclick="answer()">Bahagia Banget 💖</button>
 </div>
 
@@ -457,6 +462,49 @@ function answer(){
  $("questionBox").classList.add("hidden");
  startPose();
 }
+
+const btnNakalan = document.getElementById("btnNakalan");
+
+function moveButton(){
+  const btn = btnNakalan;
+
+  const padding = 20;
+
+  const maxX = window.innerWidth - btn.offsetWidth - padding;
+  const maxY = window.innerHeight - btn.offsetHeight - padding;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  btn.style.position = "fixed";
+  btn.style.left = x + "px";
+  btn.style.top = y + "px";
+}
+
+/* 🔥 KHUSUS HP - SENTUH LANGSUNG KABUR */
+btnNakalan.addEventListener("touchstart", function(e){
+  e.preventDefault(); // biar gak ke klik
+  moveButton();
+});
+
+/* backup kalau masih ke klik */
+btnNakalan.addEventListener("click", function(e){
+  e.preventDefault();
+  moveButton();
+});
+
+document.addEventListener("touchmove", function(e){
+  const touch = e.touches[0];
+
+  const rect = btnNakalan.getBoundingClientRect();
+
+  const distX = Math.abs(touch.clientX - (rect.left + rect.width/2));
+  const distY = Math.abs(touch.clientY - (rect.top + rect.height/2));
+
+  if(distX < 80 && distY < 80){
+    moveButton();
+  }
+});
 
 /* POSE */
 function startPose(){
