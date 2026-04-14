@@ -72,7 +72,7 @@ button{
 .photo-wrapper{
  position:absolute;
  bottom:0;
- width:100%;
+ width:90%;
  overflow:hidden;
  opacity:0;
  transition:1.5s;
@@ -86,7 +86,7 @@ button{
 }
 
 .photo-track img{
- width:169px;
+ width:160px;
  height:120px;
  margin:6px;
  border-radius:12px;
@@ -202,6 +202,28 @@ button{
  transition:0.25s ease;
 }
 
+/* tombol nect final */
+#nextBtn{
+ margin-top:20px;
+ padding:12px;
+ width:80%;
+ max-width:200px;
+ border:none;
+ border-radius:12px;
+ background:#ff4d6d;
+ color:white;
+ font-size:16px;
+ cursor:pointer;
+ opacity:0;
+ transform:translateY(20px);
+ transition:0.5s;
+}
+
+#nextBtn.show{
+ opacity:1;
+ transform:translateY(0);
+}
+
 </style>
 </head>
 
@@ -273,6 +295,9 @@ button{
 <!-- FINAL -->
 <div class="card hidden" id="finalBox">
 <div id="final"></div>
+<canvas id="c"></canvas>
+
+<button id="nextBtn" class="hidden" onclick="nextEnding()">Next ➡️</button>
 </div>
 
 <script>
@@ -468,13 +493,22 @@ const btnNakalan = document.getElementById("btnNakalan");
 function moveButton(){
   const btn = btnNakalan;
 
-  const padding = 20;
+  const margin = 20; // jarak aman dari pinggir
 
-  const maxX = window.innerWidth - btn.offsetWidth - padding;
-  const maxY = window.innerHeight - btn.offsetHeight - padding;
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
 
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
+  const btnWidth = btn.offsetWidth;
+  const btnHeight = btn.offsetHeight;
+
+  const maxX = screenWidth - btnWidth - margin;
+  const maxY = screenHeight - btnHeight - margin;
+
+  const minX = margin;
+  const minY = margin;
+
+  const x = Math.random() * (maxX - minX) + minX;
+  const y = Math.random() * (maxY - minY) + minY;
 
   btn.style.position = "fixed";
   btn.style.left = x + "px";
@@ -491,19 +525,6 @@ btnNakalan.addEventListener("touchstart", function(e){
 btnNakalan.addEventListener("click", function(e){
   e.preventDefault();
   moveButton();
-});
-
-document.addEventListener("touchmove", function(e){
-  const touch = e.touches[0];
-
-  const rect = btnNakalan.getBoundingClientRect();
-
-  const distX = Math.abs(touch.clientX - (rect.left + rect.width/2));
-  const distY = Math.abs(touch.clientY - (rect.top + rect.height/2));
-
-  if(distX < 80 && distY < 80){
-    moveButton();
-  }
 });
 
 /* POSE */
@@ -615,7 +636,42 @@ function showFinal(){
   }else firework();
  }
  typing();
+
+ // ⏳ tampilkan tombol setelah 10 detik
+ setTimeout(()=>{
+   let btn = $("nextBtn");
+   btn.classList.remove("hidden");
+   
+   setTimeout(()=>{
+     btn.classList.add("show");
+   },50);
+
+ },10000);
 }
+
+function nextEnding(){
+
+  // 💖 efek kecil sebelum pindah
+  for(let i=0;i<20;i++){
+    let love = document.createElement("div");
+    love.innerHTML = "💖";
+    love.style.position="fixed";
+    love.style.left=Math.random()*100+"vw";
+    love.style.top=Math.random()*100+"vh";
+    love.style.fontSize="20px";
+    document.body.appendChild(love);
+
+    setTimeout(()=>love.remove(),1000);
+  }
+
+  document.body.style.transition = "1s";
+  document.body.style.opacity = "0";
+
+  setTimeout(()=>{
+    window.location.href = "https://vt.tiktok.com/ZSHp81wo6/";
+  },1000);
+}
+
 </script>
 
 </body>
